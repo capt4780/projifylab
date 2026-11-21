@@ -41,6 +41,24 @@ fi
 echo "› Tải thư viện"
 flutter pub get
 
+echo "› Vá các plugin còn dùng proguard-android.txt (AGP 9 không còn hỗ trợ)"
+python3 - <<'PY'
+import json, pathlib, urllib.parse
+cfg = json.loads(pathlib.Path('.dart_tool/package_config.json').read_text())
+for pkg in cfg.get('packages', []):
+    uri = pkg.get('rootUri', '')
+    if not uri.startswith('file://'):
+        continue
+    root = pathlib.Path(urllib.parse.unquote(uri[len('file://'):]))
+    for name in ('build.gradle', 'build.gradle.kts'):
+        f = root / 'android' / name
+        if f.is_file():
+            txt = f.read_text()
+            if "proguard-android.txt" in txt:
+                f.write_text(txt.replace("proguard-android.txt", "proguard-android-optimize.txt"))
+                print('  đã vá', pkg['name'])
+PY
+
 echo "› Tạo icon app và màn chờ"
 dart run flutter_launcher_icons
 dart run flutter_native_splash:create
