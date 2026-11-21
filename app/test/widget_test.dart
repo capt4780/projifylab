@@ -16,7 +16,7 @@ void main() {
     });
     expect(app.id, 7);
     expect(app.canOpen, isFalse);
-    expect(app.displayGlyph, 'TH');
+    expect(app.displayGlyph, 'TT');
     expect(MiniApp.decode(app.encode())?.title, 'Thanh Trieu Health');
   });
 
