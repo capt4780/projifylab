@@ -13,7 +13,6 @@
 /android/*
 !/android/app/
 /android/app/*
-!/android/app/build.gradle.kts
 !/android/app/src/
 /android/app/src/*
 !/android/app/src/main/

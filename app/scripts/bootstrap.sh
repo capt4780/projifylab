@@ -9,7 +9,17 @@ flutter create --org com.projifylab --project-name projify --platforms=android,i
 
 # flutter create sinh MainActivity ở gói com.projifylab.projify; app dùng com.projifylab.app.
 rm -rf android/app/src/main/kotlin/com/projifylab/projify
-rm -f android/app/build.gradle
+
+echo "› Đặt applicationId Android = com.projifylab.app, minSdk 24"
+G=android/app/build.gradle.kts
+[ -f "$G" ] || G=android/app/build.gradle
+sed -i.bak \
+  -e 's/com\.projifylab\.projify/com.projifylab.app/g' \
+  -e 's/minSdk = flutter\.minSdkVersion/minSdk = 24/' \
+  -e 's/minSdkVersion flutter\.minSdkVersion/minSdkVersion 24/' \
+  "$G"
+rm -f "$G.bak"
+grep -nE 'namespace|applicationId|minSdk' "$G" || true
 
 echo "› Đặt bundle id iOS = com.projifylab.app"
 if [ -f ios/Runner.xcodeproj/project.pbxproj ]; then
