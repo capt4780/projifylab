@@ -16,6 +16,7 @@
 	--cols: 2;
 	--hero-span: 2;
 	--hero-rspan: 1;
+	--cols-b: 2;
 	--gap: 14px;
 	--side: 20px;
 	--r: 28px;
@@ -148,9 +149,208 @@ a:hover { color: var(--pj-blue-deep); }
 	max-width: 1680px;
 	margin: 0 auto;
 	display: grid;
+	grid-template-columns: repeat(var(--cols-b), minmax(0, 1fr));
+	gap: var(--gap);
+}
+.pj-grid--legacy {
 	grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
 	grid-auto-flow: dense;
+}
+
+/* Hàng trên: app nổi bật + banner */
+.pj-top {
+	max-width: 1680px;
+	margin: 0 auto var(--gap);
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
 	gap: var(--gap);
+}
+
+/* ---------- Banner quảng cáo ---------- */
+.pj-banner {
+	position: relative;
+	aspect-ratio: 2 / 1;
+	border-radius: calc(var(--r) + 12px);
+	overflow: hidden;
+	container-type: inline-size;
+	background: #1D3FD6;
+	box-shadow: 0 18px 36px -18px rgba(29, 63, 214, 0.55);
+	touch-action: pan-y;
+	user-select: none;
+	-webkit-user-select: none;
+}
+.pj-banner__track {
+	display: flex;
+	height: 100%;
+	transition: transform 0.55s cubic-bezier(0.22, 0.8, 0.24, 1);
+	will-change: transform;
+}
+.pj-slide {
+	position: relative;
+	flex: 0 0 100%;
+	height: 100%;
+	display: block;
+	overflow: hidden;
+	background: var(--bg, #1D3FD6);
+	color: #fff;
+	text-decoration: none;
+	-webkit-user-drag: none;
+}
+a.pj-slide:hover { color: #fff; }
+.pj-slide:focus-visible { outline: 3px solid #fff; outline-offset: -6px; }
+.pj-slide__img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	pointer-events: none;
+}
+.pj-slide.has-image .pj-slide__text {
+	padding: 2.4cqw 2.8cqw;
+	border-radius: 3cqw;
+	background: rgba(11, 22, 54, 0.35);
+	-webkit-backdrop-filter: blur(10px);
+	backdrop-filter: blur(10px);
+}
+.pj-slide__deco { position: absolute; pointer-events: none; }
+.pj-slide__deco--a { width: 60%; aspect-ratio: 1; right: -14%; top: -40%; border-radius: 50%; background: rgba(255, 255, 255, 0.14); }
+.pj-slide__deco--b { height: 62%; aspect-ratio: 1; right: 9%; top: 19%; border-radius: 32%; background: rgba(255, 255, 255, 0.16); border: 1px solid rgba(255, 255, 255, 0.3); transform: rotate(12deg); }
+.pj-slide__deco--c { height: 34%; aspect-ratio: 1; right: 30%; top: 52%; border-radius: 50%; background: rgba(255, 255, 255, 0.2); }
+
+.pj-slide__text {
+	position: absolute;
+	left: 5cqw;
+	bottom: 6.5cqw;
+	max-width: 58%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 1cqw;
+}
+.pj-slide__title {
+	font-size: clamp(18px, 4.2cqw, 44px);
+	line-height: 1.15;
+	font-weight: 800;
+	letter-spacing: -0.02em;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+}
+.pj-slide__desc {
+	font-size: clamp(12px, 1.8cqw, 18px);
+	line-height: 1.45;
+	font-weight: 500;
+	opacity: 0.92;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+}
+.pj-slide__cta {
+	margin-top: 0.6cqw;
+	display: inline-flex;
+	align-items: center;
+	min-height: 42px;
+	padding: 0 18px;
+	border-radius: 999px;
+	background: #fff;
+	color: var(--pj-blue-deep);
+	font-size: 14px;
+	font-weight: 800;
+	white-space: nowrap;
+}
+
+.pj-banner__tag,
+.pj-banner__count {
+	position: absolute;
+	top: 3cqw;
+	z-index: 2;
+	padding: 6px 12px;
+	border-radius: 999px;
+	font-size: 12px;
+	font-weight: 800;
+	color: #fff;
+	pointer-events: none;
+}
+.pj-banner__tag {
+	left: 3cqw;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	background: rgba(255, 255, 255, 0.22);
+	border: 1px solid rgba(255, 255, 255, 0.4);
+	-webkit-backdrop-filter: blur(10px);
+	backdrop-filter: blur(10px);
+}
+.pj-banner__count { right: 3cqw; padding: 6px 10px; font-weight: 700; background: rgba(11, 22, 54, 0.35); }
+
+.pj-banner__arrows {
+	position: absolute;
+	right: 3cqw;
+	bottom: 6.5cqw;
+	z-index: 2;
+	display: flex;
+	gap: 8px;
+}
+.pj-banner__arrow {
+	width: 44px;
+	height: 44px;
+	padding: 0;
+	border-radius: 999px;
+	border: 1px solid rgba(255, 255, 255, 0.5);
+	background: rgba(255, 255, 255, 0.25);
+	color: #fff;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	-webkit-backdrop-filter: blur(10px);
+	backdrop-filter: blur(10px);
+}
+.pj-banner__arrow svg { width: 18px; height: 18px; }
+.pj-banner__arrow:focus-visible,
+.pj-banner__dot:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+
+.pj-banner__dots {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 1.8cqw;
+	z-index: 2;
+	display: flex;
+	justify-content: center;
+	gap: 2px;
+	pointer-events: none;
+}
+.pj-banner__dot {
+	min-width: 24px;
+	height: 28px;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	pointer-events: auto;
+}
+.pj-banner__dot span {
+	display: block;
+	width: 7px;
+	height: 7px;
+	border-radius: 999px;
+	background: #fff;
+	opacity: 0.5;
+	transition: width 0.25s ease, opacity 0.25s ease;
+}
+.pj-banner__dot[aria-current="true"] span { width: 22px; opacity: 1; }
+
+@container (max-width: 640px) {
+	.pj-banner__arrows,
+	.pj-slide__desc { display: none; }
+	.pj-slide__text { max-width: 64%; bottom: 10cqw; }
+	.pj-slide__cta { min-height: 36px; padding: 0 14px; font-size: 13px; }
 }
 
 /* ---------- Card ---------- */
@@ -178,10 +378,10 @@ a.pj-card:hover { color: #fff; transform: translateY(-4px) scale(1.02); }
 .pj-card:focus-visible { outline: 3px solid var(--pj-blue); outline-offset: 4px; }
 .pj-card.is-locked { cursor: default; }
 
-.pj-card--hero {
+.pj-card--hero { border-radius: calc(var(--r) + 12px); }
+.pj-grid--legacy .pj-card--hero {
 	grid-column: span var(--hero-span);
 	grid-row: span var(--hero-rspan);
-	border-radius: calc(var(--r) + 12px);
 }
 
 .pj-card__bubble {
@@ -433,7 +633,10 @@ a.pj-card:hover { color: #fff; transform: translateY(-4px) scale(1.02); }
 
 /* Điện thoại ngang (màn thấp) */
 @media (orientation: landscape) and (max-height: 520px) {
+	.pj-top:not(.pj-top--banner-only) { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+	.pj-top:not(.pj-top--banner-only) .pj-banner { aspect-ratio: auto; }
 	:root {
+		--cols-b: 4;
 		--cols: 5;
 		--hero-span: 2;
 		--hero-rspan: 2;
@@ -449,7 +652,10 @@ a.pj-card:hover { color: #fff; transform: translateY(-4px) scale(1.02); }
 
 /* Tablet dọc, PC dọc */
 @media (orientation: portrait) and (min-width: 700px) {
+	.pj-top:not(.pj-top--banner-only) { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+	.pj-top:not(.pj-top--banner-only) .pj-banner { aspect-ratio: auto; }
 	:root {
+		--cols-b: 3;
 		--cols: 3;
 		--hero-span: 3;
 		--hero-rspan: 1;
@@ -463,7 +669,10 @@ a.pj-card:hover { color: #fff; transform: translateY(-4px) scale(1.02); }
 
 /* Tablet ngang, PC ngang */
 @media (orientation: landscape) and (min-width: 900px) and (min-height: 521px) {
+	.pj-top:not(.pj-top--banner-only) { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+	.pj-top:not(.pj-top--banner-only) .pj-banner { aspect-ratio: auto; }
 	:root {
+		--cols-b: 4;
 		--cols: 4;
 		--hero-span: 2;
 		--hero-rspan: 2;
@@ -479,9 +688,30 @@ a.pj-card:hover { color: #fff; transform: translateY(-4px) scale(1.02); }
 @media (orientation: landscape) and (min-width: 900px) and (min-height: 521px) {
 	.pj-grid,
 	.pj-header__bar { max-width: min(1680px, calc((100vh - 120px) * 2 + 40px)); }
+	/* Có banner: hàng trên rộng gấp 3 card nổi bật */
+	.has-banner .pj-top,
+	.has-banner .pj-grid,
+	.has-banner .pj-header__bar { max-width: min(1680px, calc((100vh - 120px) * 3 + 48px)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
+	.pj-banner__track { transition: none; }
 	.pj-card { transition: none; }
 	a.pj-card:hover { transform: none; }
+}
+
+.pj-banner[hidden] { display: none; }
+
+/* Card nổi bật nhỏ (khi nằm cạnh banner trên màn dọc/điện thoại ngang) */
+@container (max-width: 320px) {
+	.pj-card__bar {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 6px;
+		padding: 10px 12px;
+		border-radius: 18px;
+	}
+	.pj-card__bar .pj-card__title { font-size: 16px; }
+	.pj-card__cta { min-height: 32px; padding: 0 12px; font-size: 13px; }
+	.pj-card__tag { padding: 5px 10px; font-size: 11px; }
 }

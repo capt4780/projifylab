@@ -1,5 +1,7 @@
 # Projify Lab – wp-content
 
+Trang chủ: https://projifylab.com/apps/
+
 Thư mục này gồm hai phần, dùng chung với nhau:
 
 | Thư mục | Vai trò |
@@ -31,18 +33,32 @@ Mỗi mini app có:
 - **Mô tả ngắn**: 1 dòng, hiện dưới tên trên card nổi bật.
 - **Thứ tự**: ô "Thứ tự" trong khung Thuộc tính, số nhỏ đứng trước.
 
+## Banner quảng cáo (wp-admin › Banner)
+
+Banner là slide ngang tỉ lệ 2:1, nằm cạnh app nổi bật. Mỗi banner có:
+
+- **Tiêu đề** và **Mô tả** (khung "Tóm tắt").
+- **Ảnh banner 2:1** (khung bên phải), nên dùng 1600 × 800 px. Chưa có ảnh thì banner dùng **Màu nền** đã chọn.
+- **Link** và tuỳ chọn **Mở ở tab mới**. Để trống link thì banner chỉ để xem và không hiện nút.
+- **Chữ trên nút** (mặc định "Xem ngay").
+- **Hiện chữ trên banner**: bỏ chọn khi chữ đã nằm sẵn trong ảnh, banner sẽ chỉ hiện ảnh.
+- **Bật/tắt** và **Thứ tự** (số nhỏ chạy trước).
+
+Khi có từ 2 banner trở lên, slide tự chuyển sau mỗi 4,5 giây. Người xem chuyển được bằng cách vuốt ngang, bấm chấm tròn hoặc bấm mũi tên (mũi tên chỉ hiện khi banner đủ lớn). Slide tạm dừng khi rê chuột vào banner.
+Plugin tạo sẵn 1 banner mẫu, sửa hoặc xoá tuỳ ý. Nếu tắt hết banner, trang chủ quay về bố cục cũ, khi đó card nổi bật nằm trong lưới.
+
 ## Bố cục trang chủ
 
 Trang tự đổi bố cục theo màn hình và khi xoay máy:
 
-| Màn hình | Số cột | Card nổi bật |
+| Màn hình | Hàng trên | Lưới app bên dưới |
 |---|---|---|
-| Điện thoại dọc | 2 | Rộng hết hàng |
-| Điện thoại ngang | 5 | 2 × 2 ô |
-| Tablet / PC dọc | 3 | Rộng hết hàng |
-| Tablet / PC ngang | 4 | 2 × 2 ô |
+| Điện thoại dọc | App nổi bật (vuông, rộng hết màn), banner 2:1 nằm ngay dưới | 2 cột |
+| Điện thoại ngang | App nổi bật + banner rộng gấp đôi | 4 cột |
+| Tablet / PC dọc | App nổi bật + banner rộng gấp đôi | 3 cột |
+| Tablet / PC ngang | App nổi bật + banner rộng gấp đôi | 4 cột |
 
-Ở màn ngang rất rộng, chiều rộng lưới được giới hạn theo chiều cao màn hình, để card nổi bật luôn nằm gọn trong một màn hình.
+Ở màn ngang rất rộng, chiều rộng trang được giới hạn theo chiều cao màn hình, để hàng trên luôn nằm gọn trong một màn hình.
 
 ## API cho app Projify
 
@@ -50,7 +66,7 @@ Trang tự đổi bố cục theo màn hình và khi xoay máy:
 
 ```json
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "apps": [
     {
       "id": 12,
@@ -67,6 +83,8 @@ Trang tự đổi bố cục theo màn hình và khi xoay máy:
   ]
 }
 ```
+
+Response có thêm khoá `banners` (danh sách banner đang bật). Muốn lấy riêng banner thì gọi `GET /wp-json/projify/v1/banners`.
 
 - `status`: `dev` (đang phát triển) hoặc `active` (hoạt động).
 - `url` để trống khi app đang phát triển.

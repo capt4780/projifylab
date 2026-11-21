@@ -5,7 +5,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'PROJIFYLAB_THEME_VERSION', '1.0.0' );
+define( 'PROJIFYLAB_THEME_VERSION', '1.1.0' );
 
 add_action(
 	'after_setup_theme',
@@ -65,6 +65,9 @@ add_filter(
 		if ( projifylab_in_app() ) {
 			$classes[] = 'in-projify-app';
 		}
+		if ( is_front_page() && projifylab_get_banners() ) {
+			$classes[] = 'has-banner';
+		}
 		return $classes;
 	}
 );
@@ -90,6 +93,19 @@ function projifylab_get_apps() {
 		return null;
 	}
 	return projify_get_apps();
+}
+
+/**
+ * Banner quảng cáo đang bật (từ plugin Projify Apps). Kết quả được nhớ trong một lần tải trang.
+ *
+ * @return array[]
+ */
+function projifylab_get_banners() {
+	static $cache = null;
+	if ( null === $cache ) {
+		$cache = function_exists( 'projify_get_banners' ) ? projify_get_banners() : array();
+	}
+	return $cache;
 }
 
 /**
