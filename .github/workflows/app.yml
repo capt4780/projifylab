@@ -64,3 +64,28 @@ jobs:
         with:
           name: projify-ios-unsigned
           path: app/projify-ios-unsigned.ipa
+
+  release:
+    name: Cập nhật bản phát hành "app-latest"
+    needs: [android, ios]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+      - name: Đăng file APK và IPA
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          cp dist/projify-android-apk/app-release.apk projify-lab.apk
+          cp dist/projify-ios-unsigned/projify-ios-unsigned.ipa projify-lab-ios-unsigned.ipa
+          if ! gh release view app-latest >/dev/null 2>&1; then
+            gh release create app-latest --prerelease --target "$GITHUB_SHA" \
+              --title "App Projify Lab – bản mới nhất" \
+              --notes "Tự động cập nhật mỗi lần code trong app/ thay đổi. projify-lab.apk: cài thử trên Android. projify-lab-ios-unsigned.ipa: bản iOS chưa ký, cần tài khoản Apple Developer để cài."
+          fi
+          gh release upload app-latest projify-lab.apk projify-lab-ios-unsigned.ipa --clobber
+          gh release edit app-latest --notes "Tự động cập nhật mỗi lần code trong app/ thay đổi. Bản build từ commit ${GITHUB_SHA::7}. projify-lab.apk: cài thử trên Android. projify-lab-ios-unsigned.ipa: bản iOS chưa ký, cần tài khoản Apple Developer để cài."
