@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Tạo phần khung Android/iOS còn thiếu rồi áp cấu hình riêng của Projify.
+# Chạy một lần sau khi clone repo (GitHub Actions cũng chạy script này).
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+echo "› Tạo khung dự án Flutter (không ghi đè file đã có)"
+flutter create --org com.projifylab --project-name projify --platforms=android,ios --no-pub .
+
+# flutter create sinh MainActivity ở gói com.projifylab.projify; app dùng com.projifylab.app.
+rm -rf android/app/src/main/kotlin/com/projifylab/projify
+rm -f android/app/build.gradle
+
+echo "› Đặt bundle id iOS = com.projifylab.app"
+if [ -f ios/Runner.xcodeproj/project.pbxproj ]; then
+  sed -i.bak 's/com\.projifylab\.projify/com.projifylab.app/g' ios/Runner.xcodeproj/project.pbxproj
+  rm -f ios/Runner.xcodeproj/project.pbxproj.bak
+fi
+
+if [ -f ios/Runner/Info.plist ] && command -v plutil >/dev/null 2>&1; then
+  echo "› Ghi tên app và lời xin quyền vào Info.plist"
+  P=ios/Runner/Info.plist
+  plutil -replace CFBundleDisplayName -string "Projify Lab" "$P"
+  plutil -replace NSCameraUsageDescription -string "Projify dùng camera để các mini app chụp ảnh và quét mã." "$P"
+  plutil -replace NSMicrophoneUsageDescription -string "Projify dùng micro để các mini app ghi âm và gọi thoại, video." "$P"
+  plutil -replace NSLocationWhenInUseUsageDescription -string "Projify dùng vị trí để các mini app gợi ý dịch vụ gần bạn." "$P"
+  plutil -replace NSPhotoLibraryUsageDescription -string "Projify cần truy cập ảnh để bạn tải ảnh lên mini app." "$P"
+  plutil -replace NSPhotoLibraryAddUsageDescription -string "Projify lưu ảnh từ mini app vào thư viện của bạn." "$P"
+fi
+
+echo "› Tải thư viện"
+flutter pub get
+
+echo "› Tạo icon app và màn chờ"
+dart run flutter_launcher_icons
+dart run flutter_native_splash:create
+
+echo "✓ Xong. Build Android: flutter build apk --release"

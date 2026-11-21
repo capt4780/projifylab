@@ -24,12 +24,33 @@
 			.trim();
 	}
 
+	// Trong app Projify: báo cho app mở mini app (app sẽ hỏi đặt mặc định rồi mở toàn màn hình).
+	function nativeBridge() {
+		var b = window.flutter_inappwebview;
+		return b && typeof b.callHandler === 'function' ? b : null;
+	}
+
 	grids.forEach(function (grid) {
 		grid.addEventListener('click', function (e) {
-			var card = e.target.closest('.pj-card.is-locked');
-			if (!card) { return; }
+			var locked = e.target.closest('.pj-card.is-locked');
+			if (locked) {
+				e.preventDefault();
+				showToast('Ứng dụng này đang phát triển, bạn quay lại sau nhé.');
+				return;
+			}
+			var card = e.target.closest('a.pj-card');
+			var bridge = nativeBridge();
+			if (!card || !bridge) { return; }
 			e.preventDefault();
-			showToast('Ứng dụng này đang phát triển, bạn quay lại sau nhé.');
+			bridge.callHandler('projifyOpenApp', {
+				id: parseInt(card.getAttribute('data-app-id'), 10) || 0,
+				title: card.getAttribute('data-title') || '',
+				url: card.href,
+				glyph: card.getAttribute('data-glyph') || '',
+				g1: card.getAttribute('data-g1') || '#2F5BFF',
+				g2: card.getAttribute('data-g2') || '#7C3AED',
+				image: card.getAttribute('data-image') || ''
+			});
 		});
 	});
 

@@ -1,0 +1,48 @@
+name: projify
+description: "Projify Lab – mở các mini web app của Projify Lab trên Android và iOS."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.5.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_inappwebview: ^6.1.5
+  permission_handler: ^12.0.1
+  geolocator: ^14.0.2
+  shared_preferences: ^2.5.3
+  http: ^1.5.0
+  url_launcher: ^6.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.6
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/brand/
+
+# Icon app: chạy `dart run flutter_launcher_icons` (scripts/bootstrap.sh tự chạy)
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon/icon.png"
+  remove_alpha_ios: true
+  background_color_ios: "#EEF2FF"
+  adaptive_icon_background: "#EEF2FF"
+  adaptive_icon_foreground: "assets/icon/foreground.png"
+  min_sdk_android: 24
+
+# Màn chờ khi mở app: chạy `dart run flutter_native_splash:create`
+flutter_native_splash:
+  color: "#EEF2FF"
+  image: "assets/icon/splash.png"
+  android_12:
+    color: "#EEF2FF"
+    image: "assets/icon/splash_android12.png"

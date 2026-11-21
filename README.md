@@ -2,7 +2,9 @@
 
 Trang chủ: https://projifylab.com/apps/
 
-Thư mục này gồm hai phần, dùng chung với nhau:
+Repo gồm WordPress (`wp-content/`) và app điện thoại (`app/`, xem `app/README.md`).
+
+Phần WordPress gồm hai thành phần dùng chung với nhau:
 
 | Thư mục | Vai trò |
 |---|---|

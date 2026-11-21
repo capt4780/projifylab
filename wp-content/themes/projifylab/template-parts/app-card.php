@@ -32,10 +32,16 @@ $name  = function_exists( 'mb_strtolower' ) ? mb_strtolower( $title ) : strtolow
 $open  = $app['active'] && $app['url'];
 
 $common = sprintf(
-	'class="%1$s" style="%2$s" data-name="%3$s"',
+	'class="%1$s" style="%2$s" data-name="%3$s" data-app-id="%4$d" data-title="%5$s" data-glyph="%6$s" data-g1="%7$s" data-g2="%8$s" data-image="%9$s"',
 	esc_attr( implode( ' ', $classes ) ),
 	$style,
-	esc_attr( $name )
+	esc_attr( $name ),
+	(int) $app['id'],
+	esc_attr( $title ),
+	esc_attr( $app['glyph'] ),
+	esc_attr( $app['gradient'][0] ),
+	esc_attr( $app['gradient'][1] ),
+	esc_url( $app['image'] )
 );
 
 if ( $open ) {
